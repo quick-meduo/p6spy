@@ -62,21 +62,6 @@ public class Value {
     return convertToString(this.value);
   }
 
-  /**
-   * Returns the {@link String} representation of the given value depending on
-   * the value type. Formats:
-   * <ul>
-   * <li>{@link java.util.Date} values it in a way configured via configuration
-   * property: {@code dateformat},</li>
-   * <li>{@code byte[]} values are converted to {@link String} representation using the configured
-   * database dialect {@link BinaryFormat}, unless configuration property {@code exclidebinary=true} is
-   * set.</li>
-   * <li>for other types string representation is simply returned.</li>
-   * </ul>
-   *
-   * @param value
-   * @return
-   */
   public String convertToString(Object value) {
     String result;
     

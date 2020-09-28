@@ -40,7 +40,7 @@ public class ConnectionInformation implements Loggable {
   private long timeToCloseConnectionNs;
   private String url;
 
-  private ConnectionInformation() {
+  public ConnectionInformation() {
     this.connectionId = counter.getAndIncrement();
   }
 

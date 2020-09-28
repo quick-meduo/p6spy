@@ -91,16 +91,6 @@ public class P6LogQuery implements P6OptionChangedListener {
     doLog(connectionId, timeElapsedNanos, category, prepared, sql, url);
   }
 
-	/**
-	 * Writes log information provided.
-	 * 
-	 * @param connectionId
-	 * @param elapsedNanos
-	 * @param category
-	 * @param prepared
-	 * @param sql
-   * @param url
-	 */
 	protected static void doLog(int connectionId, long elapsedNanos, Category category, String prepared, String sql, String url) {
 	    // give it one more try if not initialized yet
 	    if (logger == null) {

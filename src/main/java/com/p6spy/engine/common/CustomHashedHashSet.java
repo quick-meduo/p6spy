@@ -29,6 +29,7 @@ import java.util.Map;
  * @author Peter Butkovic
  *
  * @param <T>
+ * This a bbb
  */
 @SuppressWarnings("serial")
 public class CustomHashedHashSet<T> extends HashSet<T> {

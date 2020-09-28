@@ -35,6 +35,8 @@ public class P6SpyOptions extends StandardMBean implements P6SpyLoadableOptions 
     public static final String AUTOFLUSH = "autoflush";
     public static final String DRIVERLIST = "driverlist";
     public static final String LOGFILE = "logfile";
+    public static final String ROMOTELOGADDR = "remotelogaddress";
+    public static final String ROMOTELOGPORT = "remotelogport";
     public static final String LOG_MESSAGE_FORMAT = "logMessageFormat";
     public static final String APPEND = "append";
     public static final String DATEFORMAT = "dateformat";
@@ -100,6 +102,8 @@ public class P6SpyOptions extends StandardMBean implements P6SpyLoadableOptions 
     public void load(Map<String, String> options) {
       setLogMessageFormat(options.get(LOG_MESSAGE_FORMAT));
       setLogfile(options.get(LOGFILE));
+      setRomotelogAddress(options.get(ROMOTELOGADDR));
+      setRomotelogPort(options.get(ROMOTELOGPORT));
       setAppend(options.get(APPEND));
       setDateformat(options.get(DATEFORMAT));
       setAppender(options.get(APPENDER));
@@ -495,8 +499,28 @@ public class P6SpyOptions extends StandardMBean implements P6SpyLoadableOptions 
     }
 
     @Override
+    public void setRomotelogAddress(String address) {
+      optionsRepository.set(String.class, ROMOTELOGADDR, address);
+    }
+
+    @Override
+    public void setRomotelogPort(String port) {
+      optionsRepository.set(Integer.class, ROMOTELOGPORT, port);
+    }
+
+    @Override
     public String getLogfile() {
       return optionsRepository.get(String.class, LOGFILE);
+    }
+
+    @Override
+    public Integer getRmoteLoggerPort() {
+      return optionsRepository.get(Integer.class, ROMOTELOGPORT);
+    }
+
+    @Override
+    public String getRmoteLoggerAddress() {
+      return optionsRepository.get(String.class, ROMOTELOGADDR);
     }
 
     @Override

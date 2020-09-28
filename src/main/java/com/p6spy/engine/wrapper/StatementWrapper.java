@@ -419,5 +419,4 @@ public class StatementWrapper extends AbstractWrapper implements Statement {
   public boolean isCloseOnCompletion() throws SQLException {
     return delegate.isCloseOnCompletion();
   }
-
 }

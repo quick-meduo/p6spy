@@ -85,12 +85,6 @@ public class ResultSetInformation implements Loggable {
     return sb.toString();
   }
 
-  /**
-   * Returns column/value map for the last row read.
-   *
-   * NOTE: Only values that were retrieved from {@link ResultSet}
-   * ({@link ResultSet#getString(int)}, {@link ResultSet#getBoolean(int)}, etc.) will be returned.
-   */
   public Map<String, Value> getResultMap() {
     return Collections.unmodifiableMap(resultMap);
   }

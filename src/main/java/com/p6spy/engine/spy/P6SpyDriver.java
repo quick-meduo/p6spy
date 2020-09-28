@@ -17,6 +17,7 @@
  */
 package com.p6spy.engine.spy;
 
+import java.lang.reflect.Proxy;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
@@ -27,10 +28,12 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.Callable;
 import java.util.logging.Logger;
 
 import com.p6spy.engine.common.ConnectionInformation;
 import com.p6spy.engine.common.P6LogQuery;
+import com.p6spy.engine.common.P6Util;
 import com.p6spy.engine.event.JdbcEventListener;
 import com.p6spy.engine.wrapper.ConnectionWrapper;
 
@@ -38,8 +41,54 @@ import com.p6spy.engine.wrapper.ConnectionWrapper;
  * JDBC driver for P6Spy
  */
 public class P6SpyDriver implements Driver {
-  private static Driver instance = new P6SpyDriver();
+  private static P6SpyDriver instance = new P6SpyDriver();
   private static JdbcEventListenerFactory jdbcEventListenerFactory;
+
+  public static P6SpyDriver getInstance(){
+    return instance;
+  }
+
+  public Connection wrapConnection(final String url, final Properties info,
+                                   final Callable<Connection> underlyingConnectionCreator) throws SQLException {
+    if (url == null) {
+      throw new SQLException("url is required");
+    }
+
+    Connection connection = null;
+    try {
+      connection = underlyingConnectionCreator.call();
+    } catch (final Exception e) {
+    }
+    if (connection == null) {
+      return null;
+    }
+
+    //dont proxy p6spy
+    if(connection instanceof ConnectionWrapper){
+      return connection;
+    }
+
+    if (P6SpyDriver.jdbcEventListenerFactory == null) {
+      P6SpyDriver.jdbcEventListenerFactory = JdbcEventListenerFactoryLoader.load();
+    }
+
+    String p6spyurl = url.replace("jdbc:","jdbc:p6spy:");
+    final JdbcEventListener jdbcEventListener = P6SpyDriver.jdbcEventListenerFactory.createJdbcEventListener();
+    Driver passThru = findPassthru(url);
+    final ConnectionInformation connectionInformation = new ConnectionInformation();
+    connectionInformation.setUrl(p6spyurl);
+    jdbcEventListener.onBeforeGetConnection(connectionInformation);
+
+    final long start = System.nanoTime();
+    connectionInformation.setConnection(connection);
+    connectionInformation.setTimeToGetConnectionNs(System.nanoTime() - start);
+    jdbcEventListener.onAfterGetConnection(connectionInformation, null);
+    connectionInformation.setTimeToGetConnectionNs(System.nanoTime() - start);
+    jdbcEventListener.onAfterGetConnection(connectionInformation, null);
+
+    Connection connectionWrapper = ConnectionWrapper.wrap(connection, jdbcEventListener, connectionInformation);
+    return connectionWrapper;
+  }
 
   static {
     try {

@@ -17,17 +17,14 @@
  */
 package com.p6spy.engine.common;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Properties;
 import java.util.regex.Pattern;
 
 public class P6Util {
@@ -133,6 +130,7 @@ public class P6Util {
      *
      * @param name class name to load
      * @return the newly loaded class
+     * @throws ClassNotFoundException class not found
      */
     public static Class<?> forName(String name) throws ClassNotFoundException {
         ClassLoader ctxLoader = null;
@@ -225,6 +223,22 @@ public class P6Util {
     }
     return sb.toString();
   }
+  public static Class<?>[] extractAllInterfaces(final Class<?> clazz) {
+    final Set<Class<?>> interfaces = new HashSet<Class<?>>();
+    for (Class<?> currClazz = clazz; currClazz != null; currClazz = currClazz.getSuperclass()) {
+      Collections.addAll(interfaces, currClazz.getInterfaces());
+    }
 
+    return interfaces.toArray(new Class[interfaces.size()]);
+  }
+
+  public static Object invokeUnwrapException(final Object target, final Method method, final Object[] args)
+    throws Throwable {
+    try {
+      return method.invoke(target, args);
+    } catch (final InvocationTargetException e) {
+      throw e.getCause();
+    }
+  }
 }
 

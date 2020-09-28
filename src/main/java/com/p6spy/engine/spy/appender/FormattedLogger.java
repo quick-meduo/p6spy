@@ -35,11 +35,7 @@ public abstract class FormattedLogger implements P6Logger {
     logText(strategy.formatMessage(connectionId, now, elapsed, category.toString(), prepared, sql, url));
   }
 
-  /**
-   * Sets the strategy implementation to use for formatting log message.  If not set, this will default to {@link SingleLineFormat}
-   */
   public void setStrategy(final MessageFormattingStrategy strategy) {
     this.strategy = strategy;
   }
-  
 }

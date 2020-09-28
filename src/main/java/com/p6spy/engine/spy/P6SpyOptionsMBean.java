@@ -120,6 +120,14 @@ public interface P6SpyOptionsMBean {
 
   String getLogfile();
 
+  String getRmoteLoggerAddress();
+
+  Integer getRmoteLoggerPort();
+
+  void setRomotelogAddress(String address);
+
+  void setRomotelogPort(String port);
+
   String getAppender();
 
   void setAppender(String className);

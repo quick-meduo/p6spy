@@ -21,23 +21,6 @@ import com.p6spy.engine.logging.Category;
 
 public interface P6Logger {
 
-        /**
-         * Logs the {@code SQL}.
-         * 
-         * @param connectionId
-         *            connection identifier.
-         * @param now
-         *            current time.
-         * @param elapsed
-         * @param category
-         *            the category to be used for logging.
-         * @param prepared
-         *            the prepared statement to be logged.
-         * @param sql
-         *            the {@code SQL} to be logged.
-         * @param url
-         *            the database url where the sql statement executed
-         */
         public void logSQL(int connectionId, String now, long elapsed,
                         Category category, String prepared, String sql, String url);
 
