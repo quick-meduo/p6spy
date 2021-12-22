@@ -1,4 +1,4 @@
-FROM postgres:latest
+FROM postgres:14-bullseye
 
 MAINTAINER Peter Butkovic <butkovic@gmail.com>
 
