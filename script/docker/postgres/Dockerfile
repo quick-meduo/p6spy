@@ -1,4 +1,4 @@
-FROM postgres:latest
+FROM postgres:15.1
 
 MAINTAINER Peter Butkovic <butkovic@gmail.com>
 
