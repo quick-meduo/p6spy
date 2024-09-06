@@ -1,4 +1,4 @@
-FROM postgres:latest
+FROM postgres:16.4-bookworm
 
 MAINTAINER Peter Butkovic <butkovic@gmail.com>
 
